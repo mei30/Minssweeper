@@ -1,5 +1,7 @@
 use rand::Rng;
 
+use std::io;
+
 fn add(u: usize, i: i32) -> Option<usize> {
     if i.is_negative() {
         u.checked_sub(i.wrapping_abs() as u32 as usize)
@@ -36,7 +38,7 @@ impl Board {
                 BoardSquare {
                     status: SquareStatus::CLEAR(0),
                     is_revealed: false,
-                    sign: '#'
+                    sign: '-'
                 };
                 column
             ]);
@@ -61,7 +63,7 @@ impl Board {
         let mut i = 0;
 
         // TODO: Number of mins should be configurable
-        while i < 5 {
+        while i < 10 {
             i += 1;
 
             let row = rng.gen_range(0..self.row);
@@ -78,7 +80,7 @@ impl Board {
                     *board_square = BoardSquare {
                         status: SquareStatus::MIN,
                         is_revealed: false,
-                        sign: '#',
+                        sign: '*',
                     }
                 }
             }
@@ -122,7 +124,7 @@ impl Board {
                     self.grid[i][j] = BoardSquare {
                         status: SquareStatus::CLEAR(min_count),
                         is_revealed: false,
-                        sign: '#',
+                        sign: char::from_digit(min_count as u32, 10).unwrap(),
                     }
                 }
             }
@@ -130,6 +132,8 @@ impl Board {
     }
 
     fn display(&self) {
+        clearscreen::clear().expect("failed to clear screen");
+
         print!("  ");
         for i in 0..self.row {
             print!("{} ", i);
@@ -138,7 +142,12 @@ impl Board {
         for i in 0..self.row {
             print!("{} ", i);
             for j in 0..self.column {
-                print!("{} ", self.grid[i][j].sign);
+                let sign = if self.grid[i][j].is_revealed {
+                    self.grid[i][j].sign
+                } else {
+                    '#'
+                };
+                print!("{} ", sign);
             }
             println!("\n");
         }
@@ -147,6 +156,56 @@ impl Board {
 
 struct Sweeper {
     board: Board,
+}
+
+impl Sweeper {
+    fn sweep(&mut self, row: usize, column: usize) -> bool {
+        let square = self.board.get_square(row, column);
+
+        if square.is_revealed {
+            return true;
+        }
+
+        square.is_revealed = true;
+
+        match square.status {
+            SquareStatus::CLEAR(count) => {
+                if count > 0 {
+                    println!("count {}", count);
+                    return true;
+                }
+
+                let a: [i32; 3] = [-1, 0, 1];
+
+                for dr in a {
+                    for dc in a {
+                        let r = add(row, dr);
+                        let c = add(column, dc);
+
+                        if let None = r {
+                            continue;
+                        }
+
+                        if let None = c {
+                            continue;
+                        }
+
+                        let r = r.unwrap();
+                        let c = c.unwrap();
+
+                        if (r < self.board.row) && (c < self.board.column) {
+                            self.sweep(r, c);
+                        }
+                    }
+                }
+                return true;
+            }
+
+            SquareStatus::MIN => {
+                return false;
+            }
+        }
+    }
 }
 
 pub struct MinsSweeper {
@@ -166,5 +225,29 @@ impl MinsSweeper {
 
     pub fn start(&mut self) {
         self.sweeper.board.init();
+
+        loop {
+            let mut line = String::new();
+
+            io::stdin()
+                .read_line(&mut line)
+                .expect("Failed to read line");
+
+            println!("{:?}", line.split(" "));
+
+            let inputs: Vec<usize> = line
+                .split_whitespace()
+                .map(|x| x.parse().expect("Not an integer!"))
+                .collect();
+
+            let result = self.sweeper.sweep(inputs[0], inputs[1]);
+
+            if !result {
+                println!("You failed!");
+                break;
+            }
+
+            self.sweeper.board.display();
+        }
     }
 }
