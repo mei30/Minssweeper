@@ -8,7 +8,7 @@ class GameBoard;
 class Sweeper
 {
     public:
-        Sweeper(GameBoard& game_board);
+		Sweeper(GameBoard* game_board);
 
         enum SweepingStatus
         {
@@ -21,7 +21,7 @@ class Sweeper
     
         
     private:
-        GameBoard& game_board;
+		GameBoard* game_board;
 
 };
 

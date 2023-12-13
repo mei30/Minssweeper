@@ -4,17 +4,21 @@
 #include "GameBoard.h"
 #include "Sweeper.h"
 
+#include <QObject>
+
 // Supposed to work with qml
-class MinSweeper
+class MinSweeper: public QObject
 {
+	Q_OBJECT
+
     public:
         // TODO: Also get game difficulty 
-        MinSweeper(uint8_t row, uint8_t column);
+		MinSweeper(GameBoard *board);
 
     // public apis for delegating qml events to Sweeper
 
     private:
-        GameBoard board;
+		GameBoard *board;
         Sweeper sweeper;
 };
 
