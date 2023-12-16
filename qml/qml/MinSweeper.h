@@ -1,4 +1,4 @@
-#ifndef MIN_SWEEPER
+#ifndef MIN_SWEEPER_H
 #define MIN_SWEEPER_H
 
 #include "GameBoard.h"

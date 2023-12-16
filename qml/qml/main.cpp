@@ -15,16 +15,9 @@ int main(int argc, char *argv[])
 	QGuiApplication app(argc, argv);
 
 	// TODO: Must create in qml, but for sake of simplicity we use default 10X10 board
-//	GameBoard board(10, 10);
-//	MinSweeper min_game(&board);
-
 	qmlRegisterType<GameBoard>("Min", 1, 0, "GameBoard");
-//	qmlRegisterUncreatableType<MinSweeper>("Min", 1, 0, "MinSweepr",
-//										  QStringLiteral("MinSweeper musn't be created"));
 
 	QQmlApplicationEngine engine;
-
-//	engine.rootContext()->setContextProperty(QStringLiteral("MinsSweeper"), &min_game);
 
 	const QUrl url(QStringLiteral("qrc:/main.qml"));
 	QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,

@@ -4,12 +4,26 @@
 
 #include <QDebug>
 
+void GameBoard::data_changed(uint8_t i, uint8_t j)
+{
+	QModelIndex index = this->index(i, j);
+	emit dataChanged(index, index,  QVector<int>() << Is_REVEALED);
+}
+
+int GameBoard::sweep(int i, int j)
+{
+	return sweeper.sweep(i, j);
+}
+
 GameBoard::GameBoard(QObject *parent)
 	: QAbstractTableModel(parent)
 	, row(10)
 	, column(10)
 	, grid(row, std::vector<BoardSquare>(column, BoardSquare{}))
+	, sweeper(this)
 {
+	connect(&sweeper, &Sweeper::newSqureRevealed, this, &GameBoard::data_changed);
+
 	this->place_mins();
 }
 

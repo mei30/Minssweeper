@@ -1,0 +1,21 @@
+<RCC>
+    <qresource prefix="/assets">
+        <file>images/1_128x128.png</file>
+        <file>images/2_128x128.png</file>
+        <file>images/3_128x128.png</file>
+        <file>images/4_128x128.png</file>
+        <file>images/5_128x128.png</file>
+        <file>images/6_128x128.png</file>
+        <file>images/7_128x128.png</file>
+        <file>images/8_128x128.png</file>
+        <file>images/bomb_128x128.png</file>
+        <file>images/bomb_exploded_128x128.png</file>
+        <file>images/empty_128x128.png</file>
+        <file>images/flat_1_128x128.png</file>
+        <file>images/flat_2_128x128.png</file>
+        <file>images/question_1_128x128.png</file>
+        <file>images/question_2_128x128.png</file>
+        <file>images/unknown_1_128x128.png</file>
+        <file>images/unknown_2_128x128.png</file>
+    </qresource>
+</RCC>

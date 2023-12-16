@@ -7,12 +7,19 @@
 #include <QObject>
 #include <QAbstractTableModel>
 
+#include "Sweeper.h"
+
 
 class GameBoard : public QAbstractTableModel
 {
 	Q_OBJECT
 
+
+public slots:
+	void data_changed(uint8_t i, uint8_t j);
+
 public:
+
 	enum
 	{
 		STATUS = Qt::UserRole,
@@ -31,19 +38,19 @@ public:
 		BoardSquare()
 			: status(CLEAR)
 			, is_revealed(false)
-			, sign('#')
 			, neighboring_mine_count(0)
 		{
 		}
 
 		SquareStatus status;
 		bool is_revealed;
-		char sign;
 		uint8_t neighboring_mine_count;
 	};
 	Q_ENUM(SquareStatus)
 
 	typedef std::vector<std::vector<BoardSquare>> Grid;
+
+	Q_INVOKABLE int sweep(int i, int j);
 
 
 	GameBoard(QObject *parent = nullptr);
@@ -70,14 +77,17 @@ public:
 		};
 	}
 
+	uint8_t row;
+	uint8_t column;
+
 private:
 	void place_mins();
 	void add_to_neighboring_min_count(uint8_t i, uint8_t j);
 
-	uint8_t row;
-	uint8_t column;
-
 	Grid grid;
+
+	Sweeper sweeper;
+
 };
 
 #endif

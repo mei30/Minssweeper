@@ -3,11 +3,18 @@
 
 #include "inttypes.h"
 
+#include <QObject>
+
 class GameBoard;
 
-class Sweeper
+class Sweeper: public QObject
 {
-    public:
+		Q_OBJECT
+
+signals:
+	void newSqureRevealed(uint8_t i, uint8_t j);
+
+	public:
 		Sweeper(GameBoard* game_board);
 
         enum SweepingStatus
@@ -15,6 +22,8 @@ class Sweeper
             EXPLODED,
             CLEANED_UP,
         };
+
+		Q_ENUM(SweepingStatus)
 
         SweepingStatus sweep(uint8_t i, uint8_t j);
         void check_neighboring(uint8_t row, uint8_t column);

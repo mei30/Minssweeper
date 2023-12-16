@@ -16,9 +16,12 @@ Window {
 
 	Rectangle {
 		anchors.fill: parent
-		color: "#FEE8B0"
+		color: "#edede9"
 
 		TableView {
+			id: tableview
+			property int counter: -1
+
 			anchors.fill: parent
 			anchors.leftMargin: 5
 			anchors.rightMargin: 5
@@ -29,20 +32,36 @@ Window {
 			clip: true
 
 
-			model: GameBoard {}
+			model: GameBoard {
+				id: board
+			}
 
-			delegate:  Square {
-				id: sh
+			delegate: Square {
+
+				id: square
+
 				w: Math.floor((root.width - 45 - 10) / 10)
 				h: Math.floor((root.height - 45 - 10) / 10)
+				i: tableview.i
+				j: tableview.j
 				status: model.status
 				revealed: model.revealed
 				neighboring_mine_count: model.neighboring_mine_count
 
+				onSquareClicked: (i, j) => {
+
+					console.log("on square clicked", i, j)
+					board.sweep(i, j)
 				}
 
-	}
-	}
+				Component.onCompleted: {
+					++tableview.counter;
 
+					square.i = Math.floor(tableview.counter / 10)
+					square.j = tableview.counter % 10
+				}
+			}
+		}
+	}
 }
 
