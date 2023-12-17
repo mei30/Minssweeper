@@ -3,64 +3,44 @@ import QtQuick.Window 2.12
 
 import QtQuick.Layouts 1.3
 
-import Min 1.0
+// Finding a way for positioning
+// Adding game states(loose, win)
+// Adding animation
 
-import QtGraphicalEffects 1.0
-
+// Fixme: A lot of const numbers that kill flexibility(more knowldege of posiitioning is needed)
 Window {
 	id: root
-	width: 640
-	height: 640
+
 	visible: true
+	property int margin: 5
+	property int row: 10
+	property int column: 10
+	property int square_size: 50
+	property int column_spacing: 5
+	property int row_spacing: 5
+	property int socreboard_height_size: 50
+
+	minimumWidth: square_size * row + (row - 1) * row_spacing  + margin * 2
+	minimumHeight: square_size * column + (column - 1) * column_spacing + 10 + socreboard_height_size + margin * 2
+
+	maximumWidth: square_size * row + (row - 1) * row_spacing  + margin * 2
+	maximumHeight: square_size * column + (column - 1) * column_spacing + 10 + socreboard_height_size + margin * 2
+
 	title: "Minsweeper"
 
-	Rectangle {
+	ColumnLayout {
+		id: mainlayout
 		anchors.fill: parent
-		color: "#edede9"
+		anchors.margins: margin
+		spacing: 10
 
-		TableView {
-			id: tableview
-			property int counter: -1
+		ScoreBoard {
+			Layout.fillWidth: true
+		}
 
-			anchors.fill: parent
-			anchors.leftMargin: 5
-			anchors.rightMargin: 5
-			anchors.topMargin: 5
-			anchors.bottomMargin: 5
-			columnSpacing: 5
-			rowSpacing: 5
-			clip: true
-
-
-			model: GameBoard {
-				id: board
-			}
-
-			delegate: Square {
-
-				id: square
-
-				w: Math.floor((root.width - 45 - 10) / 10)
-				h: Math.floor((root.height - 45 - 10) / 10)
-				i: tableview.i
-				j: tableview.j
-				status: model.status
-				revealed: model.revealed
-				neighboring_mine_count: model.neighboring_mine_count
-
-				onSquareClicked: (i, j) => {
-
-					console.log("on square clicked", i, j)
-					board.sweep(i, j)
-				}
-
-				Component.onCompleted: {
-					++tableview.counter;
-
-					square.i = Math.floor(tableview.counter / 10)
-					square.j = tableview.counter % 10
-				}
-			}
+		GameBoard {
+			Layout.fillHeight: true
+			Layout.fillWidth: true
 		}
 	}
 }

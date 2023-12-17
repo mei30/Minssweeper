@@ -15,7 +15,7 @@ int main(int argc, char *argv[])
 	QGuiApplication app(argc, argv);
 
 	// TODO: Must create in qml, but for sake of simplicity we use default 10X10 board
-	qmlRegisterType<GameBoard>("Min", 1, 0, "GameBoard");
+	qmlRegisterType<GameBoard>("Min", 1, 0, "GameModelBoard");
 
 	QQmlApplicationEngine engine;
 

@@ -17,5 +17,13 @@
         <file>images/question_2_128x128.png</file>
         <file>images/unknown_1_128x128.png</file>
         <file>images/unknown_2_128x128.png</file>
+        <file>images/icons8-cancel-50.png</file>
+        <file>images/icons8-angry-50.png</file>
+        <file>images/icons8-clock-50.png</file>
+        <file>images/icons8-flag-50.png</file>
+        <file>images/icons8-happy-50.png</file>
+        <file>images/icons8-smiling-50.png</file>
+        <file>images/icons8-triangular-flag-48.png</file>
     </qresource>
+    <qresource prefix="/"/>
 </RCC>
