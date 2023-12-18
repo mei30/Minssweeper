@@ -4,6 +4,7 @@
 
 Sweeper::Sweeper(GameBoard* game_board)
 	: game_board(game_board)
+	, revealed_count(0)
 {
 }
 
@@ -27,15 +28,20 @@ void Sweeper::check_neighboring(uint8_t row, uint8_t column)
 {
 	GameBoard::BoardSquare& square = game_board->get_board_square(row, column);
 
+	if (square.is_revealed)
+		return;
+
 	// Base cases
-	if (square.is_revealed || square.neighboring_mine_count > 0)
+	if (square.neighboring_mine_count > 0)
 	{
 		square.is_revealed = true;
+		++revealed_count;
 		emit newSqureRevealed(row, column);
 		return;
 	}
 
 	square.is_revealed = true;
+	++revealed_count;
 
 	emit newSqureRevealed(row, column);
 

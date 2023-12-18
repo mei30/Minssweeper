@@ -5,6 +5,19 @@ Item {
 
 	height: root.socreboard_height_size
 
+	signal explosionhappend
+	signal lucky
+	signal win
+
+	function onGameOver()
+	{
+		emoji.source = "qrc:/assets/images/icons8-angry-50.png"
+	}
+
+	function onWin() {
+		emoji.source = "qrc:/assets/images/icons8-smiling-50.png"
+	}
+
 	Image {
 		id: closebutton
 
@@ -17,11 +30,10 @@ Item {
 			anchors.fill: parent
 			hoverEnabled: true
 			onClicked: {
-				console.log("Clicked")
+				Qt.quit()
 			}
 
 			onEntered: {
-				console.log("Entered")
 				closebutton.width = closebutton.sourceSize.width + 2
 				closebutton.height = closebutton.sourceSize.height + 2
 			}
@@ -106,23 +118,5 @@ Item {
 				font.family: "arial"
 			}
 		}
-
-//		Item {
-//			anchors.left: emoji.right
-
-//			Image {
-//				id: timeicon
-//				source: "qrc:/assets/images/icons8-clock-50.png"
-
-//				sourceSize.width: 25
-//				sourceSize.height: 25
-//			}
-
-//			Text {
-//				id: time
-//				text: qsTr("1:5")
-//				color: gray
-//			}
-//		}
 	}
 }

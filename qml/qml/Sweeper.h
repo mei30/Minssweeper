@@ -27,10 +27,16 @@ signals:
 
         SweepingStatus sweep(uint8_t i, uint8_t j);
         void check_neighboring(uint8_t row, uint8_t column);
+
+		inline int get_revealed_count() const {
+			return revealed_count;
+		}
     
         
     private:
 		GameBoard* game_board;
+
+		int revealed_count;
 
 };
 

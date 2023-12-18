@@ -51,6 +51,8 @@ public:
 	typedef std::vector<std::vector<BoardSquare>> Grid;
 
 	Q_INVOKABLE int sweep(int i, int j);
+	Q_INVOKABLE void reveal_mins();
+	Q_INVOKABLE int get_revealed_count();
 
 
 	GameBoard(QObject *parent = nullptr);
@@ -85,8 +87,11 @@ private:
 	void add_to_neighboring_min_count(uint8_t i, uint8_t j);
 
 	Grid grid;
+	std::vector<std::pair<int, int>> mins;
 
 	Sweeper sweeper;
+
+	int revealed_count;
 
 };
 

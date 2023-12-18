@@ -15,12 +15,26 @@ int GameBoard::sweep(int i, int j)
 	return sweeper.sweep(i, j);
 }
 
+void GameBoard::reveal_mins()
+{
+	for_each(mins.begin(), mins.end(), [this](std::pair<int, int>& min) {
+		this->grid[min.first][min.second].is_revealed = true;
+		data_changed(min.first, min.second);
+	});
+}
+
+int GameBoard::get_revealed_count()
+{
+	return sweeper.get_revealed_count();
+}
+
 GameBoard::GameBoard(QObject *parent)
 	: QAbstractTableModel(parent)
 	, row(10)
 	, column(10)
 	, grid(row, std::vector<BoardSquare>(column, BoardSquare{}))
 	, sweeper(this)
+	, revealed_count(0)
 {
 	connect(&sweeper, &Sweeper::newSqureRevealed, this, &GameBoard::data_changed);
 
@@ -94,6 +108,7 @@ void GameBoard::place_mins()
 		if (grid[i][j].status != MIN)
 		{
 			grid[i][j].status = MIN;
+			mins.push_back({i, j});
 			add_to_neighboring_min_count(i, j);
 		}
 		else

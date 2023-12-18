@@ -6,6 +6,13 @@ import Min 1.0
 TableView {
 	id: tableview
 	property int counter: -1
+	property bool lost: false
+	property bool win: false
+	property int explosion: SweepingStatus.EXPLODED
+
+	signal explosionhappend
+	signal winhappend
+	signal lucky
 
 	columnSpacing: 5
 	rowSpacing: 5
@@ -30,14 +37,34 @@ TableView {
 		neighboring_mine_count: model.neighboring_mine_count
 
 		onSquareClicked: (i, j) => {
+							 if (tableview.lost)
+							 return;
 
-							 console.log(tableview.width, tableview.height)
-							 console.log("IMPLICT TABLE", tableview.implicitWidth, tableview.implicitHeight)
-							 console.log("IMPLICT SQUARE", square.implicitWidth, square.implicitHeight)
-							 console.log(tableview.contentHeight, tableview.contentWidth)
+							 if (win)
+								return;
 
-							 console.log("on square clicked", i, j)
-							 board.sweep(i, j)
+							 var revealed_count = board.get_revealed_count()
+							 console.log(revealed_count)
+
+							 if (revealed_count === 90) {
+								 win = true
+								 tableview.winhappend()
+								 return
+							 }
+
+							 var result = board.sweep(i, j)
+
+							 if (result !== tableview.explosion)
+							 {
+								tableview.lucky()
+								return;
+							 }
+
+							tableview.lost = true
+							board.reveal_mins();
+
+							tableview.explosionhappend()
+
 						 }
 
 		Component.onCompleted: {

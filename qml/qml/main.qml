@@ -3,7 +3,6 @@ import QtQuick.Window 2.12
 
 import QtQuick.Layouts 1.3
 
-// Finding a way for positioning
 // Adding game states(loose, win)
 // Adding animation
 
@@ -26,6 +25,8 @@ Window {
 	maximumWidth: square_size * row + (row - 1) * row_spacing  + margin * 2
 	maximumHeight: square_size * column + (column - 1) * column_spacing + 10 + socreboard_height_size + margin * 2
 
+	flags: Qt.FramelessWindowHint
+
 	title: "Minsweeper"
 
 	ColumnLayout {
@@ -36,9 +37,18 @@ Window {
 
 		ScoreBoard {
 			Layout.fillWidth: true
+
+			Component.onCompleted: {
+				board.explosionhappend.connect(explosionhappend)
+				board.winhappend.connect(win)
+
+				explosionhappend.connect(onGameOver)
+				win.connect(onWin)
+			}
 		}
 
 		GameBoard {
+			id: board
 			Layout.fillHeight: true
 			Layout.fillWidth: true
 		}

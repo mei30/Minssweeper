@@ -50,9 +50,6 @@ Image {
 	MouseArea {
 		anchors.fill: parent
 		onClicked: {
-			console.log(width, height)
-			console.log("IMPLICI", root.implicitHeight, root.implicitWidth)
-			console.log(sourceSize.width, sourceSize.height)
 			root.squareClicked(parent.i, parent.j)
 		}
 	}
